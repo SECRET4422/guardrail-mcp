@@ -1,0 +1,42 @@
+# Smithery registry config — https://smithery.ai
+# Connect this GitHub repo in the Smithery dashboard and publish.
+
+name: guardrail-mcp
+title: GuardRail Security
+description: >-
+  Hybrid multi-language security MCP for AI coding agents. Secrets detection,
+  Python AST + multi-hop taint, tree-sitter sinks, repo/PR scanning, OSV CVEs,
+  SARIF/SBOM, Docker/K8s checks, enterprise policy packs and RBAC.
+
+homepage: https://github.com/SECRET4422/guardrail-mcp
+repository: https://github.com/SECRET4422/guardrail-mcp
+license: MIT
+keywords:
+  - security
+  - sast
+  - secrets
+  - taint
+  - tree-sitter
+  - sarif
+  - sbom
+  - mcp
+  - code-review
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties: {}
+  commandFunction: |
+    (config) => ({
+      command: "python",
+      args: ["-m", "guardrail", "serve", "--mode", "stdio"],
+      env: {
+        PYTHONPATH: process.cwd(),
+      },
+    })
+
+# Runtime hint for Smithery builders
+runtime: python
+build:
+  install: pip install -r requirements.txt && pip install -e .

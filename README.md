@@ -5,7 +5,8 @@ Multi-language **enterprise agent security MCP**: hybrid Python AST taint, multi
 > Heuristic guardrails for developers & coding agents — not a replacement for commercial SAST or a formal SOC2 certification. Secrets are redacted in findings.
 
 **Enterprise guide:** [docs/ENTERPRISE.md](docs/ENTERPRISE.md)  
-**Earn on MCPize:** [docs/MCPIZE.md](docs/MCPIZE.md) · [mcpize.com/developers](https://mcpize.com/developers)
+**Earn on MCPize:** [docs/MCPIZE.md](docs/MCPIZE.md) · [mcpize.com/developers](https://mcpize.com/developers)  
+**List on more platforms:** [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md) (Smithery, mcp.so, PulseMCP, Glama, official registry…)
 
 ## Feature map
 
