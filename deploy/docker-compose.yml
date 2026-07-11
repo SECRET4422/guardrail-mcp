@@ -1,0 +1,33 @@
+services:
+  guardrail:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: guardrail-mcp:enterprise
+    ports:
+      - "8787:8787"
+    environment:
+      GUARDRAIL_ENTERPRISE: "1"
+      GUARDRAIL_ENTERPRISE_CONFIG: /app/config/enterprise.json
+      GUARDRAIL_JWT_SECRET: ${GUARDRAIL_JWT_SECRET:-dev-only-jwt-secret-change-in-prod}
+      GUARDRAIL_ADMIN_API_KEY: ${GUARDRAIL_ADMIN_API_KEY:-gr_admin_dev}
+      GUARDRAIL_AUDIT_LOG: /var/log/guardrail/audit.jsonl
+      GUARDRAIL_REQUIRE_AUTH: "true"
+      GUARDRAIL_CORS_ORIGINS: ""
+      GUARDRAIL_ALLOWED_ROOTS: /repos:/workspaces:/tmp
+    volumes:
+      - guardrail-logs:/var/log/guardrail
+      - ${HOST_REPOS_PATH:-./../}:/repos:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 1g
+    cpus: "1.0"
+    restart: unless-stopped
+
+volumes:
+  guardrail-logs:

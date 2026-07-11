@@ -1,0 +1,16 @@
+fastapi>=0.110.0
+uvicorn>=0.27.0
+pydantic>=2.0.0
+# Optional official MCP SDK transport (--mode stdio-sdk):
+mcp>=1.0.0
+# Tree-sitter multi-language structural analysis (optional but recommended):
+tree-sitter>=0.22.0
+tree-sitter-python>=0.23.0
+tree-sitter-javascript>=0.23.0
+tree-sitter-go>=0.23.0
+tree-sitter-java>=0.23.0
+tree-sitter-c>=0.23.0
+tree-sitter-cpp>=0.23.0
+tree-sitter-rust>=0.23.0
+# Optional YAML enterprise/config & custom rules:
+# pyyaml>=6.0

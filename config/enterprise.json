@@ -1,0 +1,44 @@
+{
+  "enabled": true,
+  "require_auth": false,
+  "allow_local_unauthenticated": true,
+  "jwt_secret": "dev-only-jwt-secret-change-in-prod",
+  "admin_api_keys": ["gr_admin_dev"],
+  "audit_log_path": "",
+  "audit_stdout": true,
+  "metrics_enabled": true,
+  "rate_limit_enabled": true,
+  "global_allowed_roots": [],
+  "tenants": {
+    "default": {
+      "name": "Default Dev Tenant",
+      "tier": "enterprise",
+      "api_keys": ["gr_demo_enterprise_key_change_me"],
+      "roles": {
+        "gr_demo_enterprise_key_change_me": "admin"
+      },
+      "policy_pack": "strict",
+      "requests_per_minute": 300,
+      "monthly_scan_quota": 1000000,
+      "fail_on_severity": ["CRITICAL", "HIGH"],
+      "max_risk_score": 40,
+      "enabled": true
+    },
+    "readonly": {
+      "name": "Read Only",
+      "tier": "standard",
+      "api_keys": ["gr_viewer_key"],
+      "roles": {
+        "gr_viewer_key": "viewer"
+      },
+      "policy_pack": "default",
+      "allowed_tools": [
+        "export_sarif",
+        "generate_sbom",
+        "enterprise_health",
+        "enterprise_policy_status"
+      ],
+      "enabled": true
+    }
+  }
+}

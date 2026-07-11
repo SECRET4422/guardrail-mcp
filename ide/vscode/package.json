@@ -1,0 +1,46 @@
+{
+  "name": "guardrail-mcp",
+  "displayName": "GuardRail Security",
+  "description": "Run GuardRail hybrid security scans from VS Code / Cursor",
+  "version": "2.1.0",
+  "publisher": "guardrail",
+  "engines": { "vscode": "^1.85.0" },
+  "categories": ["Linters", "Other"],
+  "activationEvents": [
+    "onCommand:guardrail.scanFile",
+    "onCommand:guardrail.scanWorkspace"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "guardrail.scanFile",
+        "title": "GuardRail: Scan Current File"
+      },
+      {
+        "command": "guardrail.scanWorkspace",
+        "title": "GuardRail: Scan Workspace"
+      }
+    ],
+    "configuration": {
+      "title": "GuardRail",
+      "properties": {
+        "guardrail.pythonPath": {
+          "type": "string",
+          "default": "python",
+          "description": "Python interpreter with guardrail-mcp installed"
+        },
+        "guardrail.modulePath": {
+          "type": "string",
+          "default": "",
+          "description": "Optional PYTHONPATH to guardrail-mcp repo root"
+        },
+        "guardrail.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Optional enterprise API key"
+        }
+      }
+    }
+  }
+}

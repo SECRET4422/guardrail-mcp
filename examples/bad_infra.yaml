@@ -1,0 +1,21 @@
+# Intentionally bad infra snippet for GuardRail demos
+apiVersion: v1
+kind: Pod
+spec:
+  hostNetwork: true
+  containers:
+    - name: app
+      image: app:latest
+      securityContext:
+        privileged: true
+
+# Terraform-ish
+resource "aws_security_group_rule" "open" {
+  cidr_blocks   = ["0.0.0.0/0"]
+  instance_type = "m5.xlarge"
+  count         = 2
+}
+
+resource "aws_instance" "train" {
+  instance_type = "p4d.24xlarge"
+}

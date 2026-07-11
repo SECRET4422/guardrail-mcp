@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.env
+.env.*
+
+# Test / type / cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# GuardRail outputs
+*.sarif
+guardrail-report.json
+sbom.json
+/out/
+/reports/
+
+# Secrets — never commit
+.git-credentials
+.netrc
+*.pem
+id_rsa*
+.guardrail_history.db
+**/.guardrail_cache.json
+.guardrail_cache.json

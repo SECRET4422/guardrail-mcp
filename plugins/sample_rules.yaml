@@ -1,0 +1,21 @@
+# Sample custom org rules — drop more YAML/JSON under plugins/
+rules:
+  - id: ORG-BAN-PRINT-DEBUG
+    name: Ban debug print in production modules
+    languages: [python]
+    severity: LOW
+    type: regex
+    pattern: "(?m)^\\s*print\\(\\s*[\\\"']DEBUG"
+    message: "Debug print statement found — remove before release."
+    remediation: "Use structured logging at DEBUG level behind a flag."
+    enabled: true
+
+  - id: ORG-NO-TODO-SECURITY
+    name: Security TODO marker
+    languages: ["*"]
+    severity: MEDIUM
+    type: regex
+    pattern: "(?i)TODO\\(security\\)|FIXME\\(security\\)"
+    message: "Security TODO/FIXME left in source."
+    remediation: "Resolve the security debt item before merge."
+    enabled: true

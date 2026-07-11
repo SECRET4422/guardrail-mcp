@@ -1,0 +1,78 @@
+# GuardRail Enterprise configuration
+# Copy to config/enterprise.yaml and set GUARDRAIL_ENTERPRISE=1
+
+enabled: true
+require_auth: true
+allow_local_unauthenticated: false   # set true only for trusted stdio laptops
+jwt_secret: "change-me-to-a-long-random-string"
+jwt_issuer: guardrail-mcp
+jwt_audience: guardrail
+jwt_ttl_seconds: 3600
+
+admin_api_keys:
+  - "gr_admin_replace_me"
+
+audit_log_path: "/var/log/guardrail/audit.jsonl"
+audit_stdout: true
+metrics_enabled: true
+rate_limit_enabled: true
+
+# Filesystem sandbox — scans may only touch these roots
+global_allowed_roots:
+  - "/workspaces"
+  - "/repos"
+  - "/tmp/guardrail-scans"
+
+blocked_tools_global: []
+
+compliance_frameworks:
+  - SOC2
+  - ISO27001
+  - OWASP-ASVS
+
+data_residency: local
+retention_days: 90
+
+# Policy packs are built-in (default, strict, soc2, pci) — override/extend here
+policy_packs:
+  strict:
+    description: "Enterprise gate — fail on HIGH+"
+    fail_on_severity: [CRITICAL, HIGH]
+    max_risk_score: 40
+    compliance_controls: [CC6.1, CC6.6, CC7.1, CC7.2]
+
+tenants:
+  acme-prod:
+    name: "Acme Production"
+    tier: enterprise
+    api_keys:
+      - "gr_acme_prod_replace_me"
+    roles:
+      gr_acme_prod_replace_me: scanner
+    policy_pack: strict
+    allowed_roots:
+      - "/repos/acme"
+    denied_tools: []
+    requests_per_minute: 60
+    monthly_scan_quota: 100000
+    max_files_per_scan: 5000
+    max_workers: 16
+    fail_on_severity: [CRITICAL, HIGH]
+    max_risk_score: 40
+    enabled: true
+
+  acme-dev:
+    name: "Acme Development"
+    tier: standard
+    api_keys:
+      - "gr_acme_dev_replace_me"
+    roles:
+      gr_acme_dev_replace_me: operator
+    policy_pack: default
+    allowed_roots:
+      - "/repos/acme"
+      - "/tmp"
+    requests_per_minute: 180
+    monthly_scan_quota: 200000
+    max_risk_score: 100
+    enabled: true

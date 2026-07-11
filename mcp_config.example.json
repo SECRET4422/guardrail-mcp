@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "guardrail": {
+      "command": "python",
+      "args": ["-m", "guardrail", "--mode", "stdio"],
+      "cwd": "/absolute/path/to/guardrail-mcp",
+      "env": {
+        "PYTHONPATH": "/absolute/path/to/guardrail-mcp"
+      }
+    }
+  }
+}
