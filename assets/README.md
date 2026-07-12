@@ -8,3 +8,7 @@
 | `logo-dark-banner.png` | GitHub README hero / social banner |
 
 Colors: navy `#0b1220`, blue `#5b9dff`, teal `#3ddc97`.
+
+## Web-optimized set (`web/`)
+
+Used by the marketing site in `/website`.
