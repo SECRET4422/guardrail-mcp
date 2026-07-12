@@ -8,11 +8,13 @@
   <meta name="theme-color" content="#060912" />
   <meta property="og:title" content="GuardRail Security MCP" />
   <meta property="og:description" content="Scan AI-generated code before you merge. Hybrid engines + enterprise policy gates." />
-  <meta property="og:image" content="assets/web/product-dashboard.jpg" />
+  <meta property="og:image" content="assets/web/og-social.jpg" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" href="assets/web/logo-icon.png" type="image/png" />
-  <link rel="apple-touch-icon" href="assets/web/logo-icon.png" />
+  <meta name="twitter:image" content="assets/web/og-social.jpg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/web/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/web/favicon-64.png" />
+  <link rel="apple-touch-icon" href="assets/web/apple-touch-icon.png" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -34,8 +36,8 @@
         <li><a href="#faq">FAQ</a></li>
       </ul>
       <div class="nav-cta" id="navCta">
-        <a class="btn btn-ghost" href="https://github.com/SECRET4422/guardrail-mcp" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn btn-primary" href="https://mcpize.com/developers" target="_blank" rel="noopener">Get on MCPize</a>
+        <a class="btn btn-ghost" href="https://github.com/SECRET4422/guardrail-mcp" target="_blank" rel="noopener">★ Star</a>
+        <a class="btn btn-primary" href="https://mcpize.com/mcp/guardrail" target="_blank" rel="noopener">MCPize listing</a>
       </div>
     </div>
   </header>
@@ -238,40 +240,63 @@
       </div>
     </section>
 
+    
     <section id="demo" class="section-alt">
       <div class="container">
         <div class="section-head reveal">
-          <h2>Interactive hybrid scan demo</h2>
-          <p>Simulated client-side preview of what the real pipeline returns on a dirty snippet.</p>
+          <h2>Live security playground</h2>
+          <p>
+            Paste code or load a sample. The browser runs a high-fidelity demo engine with real GuardRail rule IDs.
+            For production accuracy use the Python MCP/CLI.
+          </p>
         </div>
-        <div class="demo-wrap reveal">
-          <div class="demo-card">
-            <div class="bar">
-              <span>vulnerable_sample.py · hybrid engines</span>
-              <button class="btn btn-primary" id="runDemo" type="button">Run live demo</button>
+        <div class="playground reveal">
+          <div class="play-left">
+            <div class="play-toolbar">
+              <div class="sample-row" id="sampleRow">
+                <button type="button" class="sample-btn active" data-sample="python_bad">Python unsafe</button>
+                <button type="button" class="sample-btn" data-sample="python_taint">Python taint</button>
+                <button type="button" class="sample-btn" data-sample="python_clean">Python clean</button>
+                <button type="button" class="sample-btn" data-sample="javascript_bad">JavaScript</button>
+                <button type="button" class="sample-btn" data-sample="go_bad">Go</button>
+                <button type="button" class="sample-btn" data-sample="c_bad">C</button>
+              </div>
+              <button class="btn btn-primary" id="runDemo" type="button">▶ Run scan</button>
             </div>
-            <pre id="demoOut">Click “Run live demo” to simulate:
-
-  password hardcode
-  SQL f-string from request.args
-  eval(user input)
-
-Real command:
-  from guardrail.hybrid_scan import hybrid_scan
-  hybrid_scan(open("app.py").read(), filename="app.py")</pre>
+            <textarea id="demoInput" class="demo-input" spellcheck="false" aria-label="Source code to scan"></textarea>
+            <p class="play-hint">Tip: edit the code and re-run. Secrets in excerpts are redacted.</p>
           </div>
-          <div class="score-card">
-            <h3 style="margin:0 0 .2rem">Security score</h3>
-            <p style="margin:0;color:var(--muted);font-size:.9rem">100 = clean · findings reduce score</p>
-            <div class="score-ring" id="scoreRing" style="--p: 8%"><strong id="scoreVal">—</strong></div>
-            <div class="score-meta">
-              <div><span>Verdict</span><span id="verdictVal" class="v-ok">Ready</span></div>
-              <div><span>Issues</span><span id="issuesVal">—</span></div>
-              <div><span>Engines</span><span id="enginesVal">—</span></div>
-              <div><span>Policy</span><span id="policyVal">—</span></div>
+          <div class="play-right">
+            <div class="score-card">
+              <div class="score-top">
+                <div>
+                  <h3 style="margin:0">Scan result</h3>
+                  <p style="margin:.2rem 0 0;color:var(--muted);font-size:.88rem">Interactive demo engine</p>
+                </div>
+                <div class="score-ring" id="scoreRing" style="--p: 8%"><strong id="scoreVal">—</strong></div>
+              </div>
+              <div class="score-meta">
+                <div><span>Verdict</span><span id="verdictVal" class="v-ok">Ready</span></div>
+                <div><span>Policy</span><span id="policyVal">—</span></div>
+                <div><span>Issues</span><span id="issuesVal">—</span></div>
+                <div><span>Risk score</span><span id="riskVal">—</span></div>
+                <div><span>Grade</span><span id="gradeVal">—</span></div>
+                <div><span>Engines</span><span id="enginesVal">demo-regex + taint</span></div>
+              </div>
+            </div>
+            <div class="findings-card">
+              <div class="bar"><span>Findings</span><span id="findingsCount">0</span></div>
+              <div id="findingsList" class="findings-list">
+                <div class="finding empty">Run a scan to see findings with line numbers, severity, and remediations.</div>
+              </div>
             </div>
           </div>
         </div>
+        <p class="demo-footnote reveal">
+          Ground truth CLI:
+          <code>python -c "from guardrail.hybrid_scan import hybrid_scan; …"</code>
+          · <a href="https://github.com/SECRET4422/guardrail-mcp/blob/main/docs/DEMO_SCRIPT.md" target="_blank" rel="noopener">Record a 2‑min video</a>
+        </p>
       </div>
     </section>
 
@@ -305,7 +330,7 @@ Real command:
               <li>Fix drafts</li>
               <li>Marketplace listing</li>
             </ul>
-            <a class="btn btn-primary" href="https://mcpize.com/developers" target="_blank" rel="noopener">Start Pro</a>
+            <a class="btn btn-primary" href="https://mcpize.com/mcp/guardrail" target="_blank" rel="noopener">Start Pro</a>
           </div>
           <div class="price reveal">
             <div class="plan">Team</div>
@@ -317,7 +342,7 @@ Real command:
               <li>Policy packs</li>
               <li>Shared team access</li>
             </ul>
-            <a class="btn btn-ghost" href="https://mcpize.com/developers" target="_blank" rel="noopener">Choose Team</a>
+            <a class="btn btn-ghost" href="https://mcpize.com/mcp/guardrail" target="_blank" rel="noopener">Choose Team</a>
           </div>
           <div class="price reveal">
             <div class="plan">Enterprise</div>
@@ -439,6 +464,21 @@ python -m guardrail --mode stdio</pre>
       </div>
     </section>
 
+    
+    <section class="star-cta section-alt">
+      <div class="container star-box reveal">
+        <div>
+          <h2 style="margin:0 0 .4rem">Support GuardRail</h2>
+          <p style="margin:0;color:var(--muted)">Stars and reviews unlock marketplace trust (and help us ship faster).</p>
+        </div>
+        <div class="star-actions">
+          <a class="btn btn-primary btn-lg" href="https://github.com/SECRET4422/guardrail-mcp" target="_blank" rel="noopener">★ Star on GitHub</a>
+          <a class="btn btn-ghost btn-lg" href="https://mcpize.com/mcp/guardrail" target="_blank" rel="noopener">Leave an MCPize review</a>
+          <a class="btn btn-teal btn-lg" href="https://github.com/SECRET4422/guardrail-mcp/blob/main/docs/MCPIZE_VERIFIED.md" target="_blank" rel="noopener">Verified checklist</a>
+        </div>
+      </div>
+    </section>
+
     <section class="cta">
       <div class="container">
         <div class="cta-box reveal">
@@ -447,7 +487,7 @@ python -m guardrail --mode stdio</pre>
           <p>Open-source core. Marketplace monetization. Enterprise controls when you need them.</p>
           <div class="cta-actions">
             <a class="btn btn-primary btn-lg" href="https://github.com/SECRET4422/guardrail-mcp" target="_blank" rel="noopener">Open GitHub repo</a>
-            <a class="btn btn-teal btn-lg" href="https://mcpize.com/developers" target="_blank" rel="noopener">Publish on MCPize</a>
+            <a class="btn btn-teal btn-lg" href="https://mcpize.com/mcp/guardrail" target="_blank" rel="noopener">Publish on MCPize</a>
             <a class="btn btn-ghost btn-lg" href="https://secret4422.github.io/guardrail-mcp/" target="_blank" rel="noopener">This website</a>
           </div>
         </div>
@@ -486,7 +526,7 @@ python -m guardrail --mode stdio</pre>
         <div>
           <h4>Marketplace</h4>
           <ul>
-            <li><a href="https://mcpize.com/developers" target="_blank" rel="noopener">MCPize</a></li>
+            <li><a href="https://mcpize.com/mcp/guardrail" target="_blank" rel="noopener">MCPize</a></li>
             <li><a href="https://smithery.ai" target="_blank" rel="noopener">Smithery</a></li>
             <li><a href="https://mcp.so" target="_blank" rel="noopener">mcp.so</a></li>
             <li><a href="https://github.com/SECRET4422/guardrail-mcp/blob/main/docs/DISTRIBUTION.md" target="_blank" rel="noopener">Distribution</a></li>
@@ -500,6 +540,7 @@ python -m guardrail --mode stdio</pre>
     </div>
   </footer>
 
+  <script src="js/demo-engine.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

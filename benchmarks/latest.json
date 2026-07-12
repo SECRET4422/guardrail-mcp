@@ -1,0 +1,83 @@
+{
+  "treesitter": {
+    "available": false,
+    "languages": [],
+    "rules": 9
+  },
+  "cases": [
+    {
+      "name": "python_taint",
+      "language": "python",
+      "issue_count": 5,
+      "engines": [
+        "regex",
+        "ast",
+        "taint"
+      ],
+      "ms_mean": 0.798,
+      "ms_p50": 0.723,
+      "ms_min": 0.66,
+      "ms_max": 1.171,
+      "taint_ms_mean": 0.34,
+      "treesitter_ms_mean": 0.0
+    },
+    {
+      "name": "python_clean",
+      "language": "python",
+      "issue_count": 0,
+      "engines": [
+        "regex",
+        "ast"
+      ],
+      "ms_mean": 0.17,
+      "ms_p50": 0.157,
+      "ms_min": 0.141,
+      "ms_max": 0.246,
+      "taint_ms_mean": 0.076,
+      "treesitter_ms_mean": 0.0
+    },
+    {
+      "name": "js_eval",
+      "language": "javascript",
+      "issue_count": 3,
+      "engines": [
+        "regex",
+        "lang:javascript"
+      ],
+      "ms_mean": 0.118,
+      "ms_p50": 0.106,
+      "ms_min": 0.093,
+      "ms_max": 0.163
+    },
+    {
+      "name": "go_sql",
+      "language": "go",
+      "issue_count": 2,
+      "engines": [
+        "regex",
+        "lang:go"
+      ],
+      "ms_mean": 0.112,
+      "ms_p50": 0.095,
+      "ms_min": 0.091,
+      "ms_max": 0.165
+    },
+    {
+      "name": "c_buf",
+      "language": "c",
+      "issue_count": 2,
+      "engines": [
+        "regex",
+        "lang:c"
+      ],
+      "ms_mean": 0.091,
+      "ms_p50": 0.084,
+      "ms_min": 0.08,
+      "ms_max": 0.122
+    }
+  ],
+  "summary": {
+    "total_cases": 5,
+    "mean_ms": 0.258
+  }
+}

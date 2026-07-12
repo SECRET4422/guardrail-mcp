@@ -121,57 +121,123 @@
   );
   stats.forEach((s) => ioStats.observe(s));
 
-  // Live demo
+
+  // Live playground demo
   const runBtn = document.getElementById("runDemo");
-  const demoOut = document.getElementById("demoOut");
+  const demoInput = document.getElementById("demoInput");
+  const findingsList = document.getElementById("findingsList");
+  const findingsCount = document.getElementById("findingsCount");
   const scoreVal = document.getElementById("scoreVal");
   const scoreRing = document.getElementById("scoreRing");
   const verdictVal = document.getElementById("verdictVal");
   const enginesVal = document.getElementById("enginesVal");
   const issuesVal = document.getElementById("issuesVal");
   const policyVal = document.getElementById("policyVal");
+  const riskVal = document.getElementById("riskVal");
+  const gradeVal = document.getElementById("gradeVal");
+  const sampleRow = document.getElementById("sampleRow");
 
-  if (runBtn && demoOut) {
+  function loadSample(key) {
+    if (!window.GuardRailDemo || !demoInput) return;
+    const src = window.GuardRailDemo.SAMPLES[key];
+    if (src != null) demoInput.value = src;
+    if (sampleRow) {
+      sampleRow.querySelectorAll(".sample-btn").forEach((b) => {
+        b.classList.toggle("active", b.getAttribute("data-sample") === key);
+      });
+    }
+  }
+
+  function renderFindings(result) {
+    if (!findingsList) return;
+    const issues = result.issues || [];
+    if (findingsCount) findingsCount.textContent = String(issues.length);
+    if (!issues.length) {
+      findingsList.innerHTML = '<div class="finding empty">No issues found. Try the “Python unsafe” sample.</div>';
+      return;
+    }
+    findingsList.innerHTML = issues
+      .map((i) => {
+        const sev = i.severity || "INFO";
+        return (
+          '<article class="finding">' +
+          '<div class="fh">' +
+          `<span class="sev ${sev}">${sev}</span>` +
+          `<span class="title">${escapeHtml(i.vulnerability_name || i.rule_id)}</span>` +
+          "</div>" +
+          `<div class="meta">${escapeHtml(i.rule_id)} · line ${i.line || "?"}</div>` +
+          `<div class="ex">${escapeHtml(i.excerpt_redacted || "")}</div>` +
+          `<div class="rem">${escapeHtml(i.remediation || "")}</div>` +
+          "</article>"
+        );
+      })
+      .join("");
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function applyResult(result) {
+    const sec = (result.security_score && result.security_score.score) || 0;
+    const grade = (result.security_score && result.security_score.grade) || "—";
+    if (scoreVal) scoreVal.textContent = String(sec);
+    if (scoreRing) scoreRing.style.setProperty("--p", sec + "%");
+    if (verdictVal) {
+      verdictVal.textContent = result.security_verdict || "—";
+      verdictVal.className = result.security_verdict === "REJECTED" ? "v-bad" : "v-ok";
+    }
+    if (policyVal) {
+      policyVal.textContent = result.policy_decision || "—";
+      policyVal.className = result.policy_decision === "DENY" ? "v-bad" : "v-ok";
+    }
+    if (issuesVal) issuesVal.textContent = String(result.issue_count || 0);
+    if (riskVal) riskVal.textContent = String(result.risk_score || 0);
+    if (gradeVal) gradeVal.textContent = grade;
+    if (enginesVal) enginesVal.textContent = (result.engines || []).join(" + ") || "—";
+    renderFindings(result);
+  }
+
+  if (sampleRow) {
+    sampleRow.addEventListener("click", (e) => {
+      const btn = e.target.closest(".sample-btn");
+      if (!btn) return;
+      loadSample(btn.getAttribute("data-sample"));
+    });
+  }
+
+  // default sample
+  loadSample("python_bad");
+
+  if (runBtn && demoInput && window.GuardRailDemo) {
     runBtn.addEventListener("click", () => {
       runBtn.disabled = true;
       runBtn.textContent = "Scanning…";
-      demoOut.textContent =
-        "→ hybrid_scan(source, language='python')\n→ engines: regex · ast · taint · treesitter · plugins\n\n";
-      const lines = [
-        { t: 280, s: "• GR-SEC-002   HIGH      Hardcoded credential  excerpt=password=\"Su****99\"" },
-        { t: 620, s: "• GR-TAINT-003 CRITICAL  Tainted SQL sink      path=request.args → f-string → execute" },
-        { t: 980, s: "• GR-TAINT-001 CRITICAL  Tainted eval/exec     path=form.expr → eval" },
-        { t: 1320, s: "• GR-AST-003   CRITICAL  Dynamic code execution" },
-        { t: 1680, s: "• GR-TS-PY-001 CRITICAL  tree-sitter eval call" },
-        {
-          t: 2100,
-          s:
-            "\n────────────────────────────────────\nsecurity_verdict : REJECTED\nrisk_score        : 205\npolicy_decision   : DENY  (strict pack)\nsecurity_score    : 28 / F\nremediation       : 5 fix drafts ready",
-        },
-      ];
-      lines.forEach(({ t, s }) => {
-        setTimeout(() => {
-          demoOut.textContent += s + "\n";
-          demoOut.scrollTop = demoOut.scrollHeight;
-        }, t);
-      });
+      // tiny async delay so UI paints and feels "live"
       setTimeout(() => {
-        if (scoreVal) scoreVal.textContent = "28";
-        if (scoreRing) scoreRing.style.setProperty("--p", "28%");
-        if (verdictVal) {
-          verdictVal.textContent = "REJECTED";
-          verdictVal.className = "v-bad";
-        }
-        if (enginesVal) enginesVal.textContent = "5 engines";
-        if (issuesVal) issuesVal.textContent = "5 findings";
-        if (policyVal) {
-          policyVal.textContent = "DENY";
-          policyVal.className = "v-bad";
+        try {
+          const result = window.GuardRailDemo.scan(demoInput.value);
+          applyResult(result);
+          showToast(
+            result.security_verdict === "REJECTED"
+              ? "Blocked: " + result.issue_count + " issue(s)"
+              : "Approved: clean enough"
+          );
+        } catch (err) {
+          showToast("Demo error: " + (err && err.message ? err.message : err));
+          console.error(err);
         }
         runBtn.disabled = false;
-        runBtn.textContent = "Run live demo";
-        showToast("Hybrid scan complete");
-      }, 2300);
+        runBtn.textContent = "▶ Run scan";
+      }, 180);
     });
+  } else if (runBtn) {
+    runBtn.addEventListener("click", () => showToast("Demo engine failed to load"));
   }
+
+
 })();

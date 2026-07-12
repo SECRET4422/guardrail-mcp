@@ -1,0 +1,78 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><title>GuardRail test results</title>
+<style>body{font-family:system-ui;background:#0b1220;color:#e8eefc;padding:2rem}pre{background:#121a2b;padding:1rem;border-radius:12px;overflow:auto;border:1px solid #243}
+.ok{color:#3ddc97;font-weight:800;font-size:1.4rem}</style></head><body>
+<h1>GuardRail automated tests</h1>
+<p class=ok>OK — 65 tests in 0.305s</p>
+<p><a href="https://github.com/SECRET4422/guardrail-mcp" style="color:#5b9dff">GitHub repo</a></p>
+<pre>test_score (test_advanced_platform.DashboardTests.test_score) ... ok
+test_engine_status_tool (test_advanced_platform.HybridTests.test_engine_status_tool) ... ok
+test_hybrid_python (test_advanced_platform.HybridTests.test_hybrid_python) ... ok
+test_cache_hit (test_advanced_platform.IncrementalTests.test_cache_hit) ... ok
+test_load_sample_plugins (test_advanced_platform.PluginTests.test_load_sample_plugins) ... ok
+test_custom_regex (test_advanced_platform.RuleEngineTests.test_custom_regex) ... ok
+test_multihop_sql (test_advanced_platform.TaintTests.test_multihop_sql) ... ok
+test_sanitizer_blocks (test_advanced_platform.TaintTests.test_sanitizer_blocks) ... ok
+test_python_eval_if_available (test_advanced_platform.TreeSitterTests.test_python_eval_if_available) ... skipped 'tree-sitter not installed'
+test_status (test_advanced_platform.TreeSitterTests.test_status) ... ok
+test_aliased_eval (test_ast_engine.ASTEngineTests.test_aliased_eval) ... ok
+test_hybrid_pipeline_includes_engines (test_ast_engine.ASTEngineTests.test_hybrid_pipeline_includes_engines) ... ok
+test_non_python_still_regex (test_ast_engine.ASTEngineTests.test_non_python_still_regex) ... ok
+test_safe_subprocess_clean (test_ast_engine.ASTEngineTests.test_safe_subprocess_clean) ... ok
+test_shell_true (test_ast_engine.ASTEngineTests.test_shell_true) ... ok
+test_tainted_sql (test_ast_engine.ASTEngineTests.test_tainted_sql) ... ok
+test_tainted_subprocess (test_ast_engine.ASTEngineTests.test_tainted_subprocess) ... ok
+test_aws_totals (test_cost.CostAuditTests.test_aws_totals) ... ok
+test_bad_provider (test_cost.CostAuditTests.test_bad_provider) ... ok
+test_empty (test_cost.CostAuditTests.test_empty) ... ok
+test_gcp (test_cost.CostAuditTests.test_gcp) ... ok
+test_api_key_auth (test_enterprise.EnterpriseAuthTests.test_api_key_auth) ... ok
+test_invalid_key (test_enterprise.EnterpriseAuthTests.test_invalid_key) ... ok
+test_jwt_roundtrip (test_enterprise.EnterpriseAuthTests.test_jwt_roundtrip) ... ok
+test_admin_scan_with_policy (test_enterprise.EnterpriseGatewayTests.test_admin_scan_with_policy) ... ok
+test_clean_code_allow (test_enterprise.EnterpriseGatewayTests.test_clean_code_allow) ... ok
+test_enterprise_health (test_enterprise.EnterpriseGatewayTests.test_enterprise_health) ... ok
+test_list_tools_includes_enterprise (test_enterprise.EnterpriseGatewayTests.test_list_tools_includes_enterprise) ... ok
+test_mcp_dispatch_uses_gateway (test_enterprise.EnterpriseGatewayTests.test_mcp_dispatch_uses_gateway) ... ok
+test_sandbox_denies_outside_root (test_enterprise.EnterpriseGatewayTests.test_sandbox_denies_outside_root) ... ok
+test_viewer_forbidden_scan (test_enterprise.EnterpriseGatewayTests.test_viewer_forbidden_scan) ... ok
+test_evaluate_deny (test_enterprise.PolicyTests.test_evaluate_deny) ... ok
+test_bucket (test_enterprise.RateLimitTests.test_bucket) ... ok
+test_clean_budget (test_infra_security.InfraSecurityTests.test_clean_budget) ... ok
+test_combined_reject_on_budget (test_infra_security.InfraSecurityTests.test_combined_reject_on_budget) ... ok
+test_docker_root (test_infra_security.InfraSecurityTests.test_docker_root) ... ok
+test_initialize (test_mcp_dispatch.DispatchTests.test_initialize) ... ok
+test_initialized_notification_no_response (test_mcp_dispatch.DispatchTests.test_initialized_notification_no_response) ... ok
+test_ping (test_mcp_dispatch.DispatchTests.test_ping) ... ok
+test_tools_call_cost (test_mcp_dispatch.DispatchTests.test_tools_call_cost) ... ok
+test_tools_call_infra (test_mcp_dispatch.DispatchTests.test_tools_call_infra) ... ok
+test_tools_call_safety (test_mcp_dispatch.DispatchTests.test_tools_call_safety) ... ok
+test_tools_list (test_mcp_dispatch.DispatchTests.test_tools_list) ... ok
+test_unknown_method (test_mcp_dispatch.DispatchTests.test_unknown_method) ... ok
+test_inventory_no_network (test_platform.DepsOfflineTests.test_inventory_no_network) ... ok
+test_c_strcpy (test_platform.LanguageTests.test_c_strcpy) ... ok
+test_go_sql (test_platform.LanguageTests.test_go_sql) ... ok
+test_js_eval (test_platform.LanguageTests.test_js_eval) ... ok
+test_scan_examples_tree (test_platform.RepoScanTests.test_scan_examples_tree) ... ok
+test_fixes (test_platform.SarifSbomFixTests.test_fixes) ... ok
+test_sarif_shape (test_platform.SarifSbomFixTests.test_sarif_shape) ... ok
+test_sbom_from_project (test_platform.SarifSbomFixTests.test_sbom_from_project) ... ok
+test_container (test_platform.ToolsCatalogTests.test_container) ... ok
+test_list_and_call (test_platform.ToolsCatalogTests.test_list_and_call) ... ok
+test_pipeline_repo (test_platform.ToolsCatalogTests.test_pipeline_repo) ... ok
+test_excerpt (test_redaction.RedactionTests.test_excerpt) ... ok
+test_redact_match_edges (test_redaction.RedactionTests.test_redact_match_edges) ... ok
+test_sanitize_log (test_redaction.RedactionTests.test_sanitize_log) ... ok
+test_clean_code_low_risk (test_safety.SafetyAuditTests.test_clean_code_low_risk) ... ok
+test_dirty_code_finds_criticals (test_safety.SafetyAuditTests.test_dirty_code_finds_criticals) ... ok
+test_redaction_masks_token_prefix (test_safety.SafetyAuditTests.test_redaction_masks_token_prefix) ... ok
+test_safe_subprocess_not_flagged (test_safety.SafetyAuditTests.test_safe_subprocess_not_flagged) ... ok
+test_shell_true_flagged (test_safety.SafetyAuditTests.test_shell_true_flagged) ... ok
+test_tenant_denied (test_safety.SafetyAuditTests.test_tenant_denied) ... ok
+test_truncation (test_safety.SafetyAuditTests.test_truncation) ... ok
+
+----------------------------------------------------------------------
+Ran 65 tests in 0.305s
+
+OK (skipped=1)
+</pre>
+</body></html>

@@ -1,0 +1,48 @@
+{
+  "generated_at": "2026-07-12T07:16:09Z",
+  "cases": [
+    {
+      "name": "dirty_py",
+      "issue_count": 19,
+      "engines": [
+        "regex",
+        "ast",
+        "taint"
+      ],
+      "latency_ms_mean": 8.71,
+      "latency_ms_p50": 8.45,
+      "latency_ms_min": 8.434,
+      "latency_ms_max": 9.61,
+      "peak_traced_memory_kb": 110.1,
+      "throughput_scans_per_sec": 114.8
+    },
+    {
+      "name": "clean_py",
+      "issue_count": 0,
+      "engines": [
+        "regex",
+        "ast"
+      ],
+      "latency_ms_mean": 0.683,
+      "latency_ms_p50": 0.646,
+      "latency_ms_min": 0.632,
+      "latency_ms_max": 0.826,
+      "peak_traced_memory_kb": 29.6,
+      "throughput_scans_per_sec": 1464.9
+    },
+    {
+      "name": "js",
+      "issue_count": 2,
+      "engines": [
+        "regex"
+      ],
+      "latency_ms_mean": 0.466,
+      "latency_ms_p50": 0.472,
+      "latency_ms_min": 0.435,
+      "latency_ms_max": 0.489,
+      "peak_traced_memory_kb": 3.7,
+      "throughput_scans_per_sec": 2147.2
+    }
+  ],
+  "process_max_rss_kb": 15368
+}
