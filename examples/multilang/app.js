@@ -1,3 +1,4 @@
+// INTENTIONAL INSECURE FIXTURE — demo/test only. Not production code.
 // Intentionally vulnerable JS sample
 const { exec } = require('child_process');
 

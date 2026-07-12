@@ -1,4 +1,5 @@
 package main
+// INTENTIONAL INSECURE FIXTURE — demo/test only.
 
 import (
         "database/sql"

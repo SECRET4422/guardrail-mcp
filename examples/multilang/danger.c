@@ -1,3 +1,4 @@
+/* INTENTIONAL INSECURE FIXTURE — demo/test only. */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

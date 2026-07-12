@@ -1,4 +1,9 @@
-"""Intentionally vulnerable sample for GuardRail demos — DO NOT use in production."""
+"""
+INTENTIONAL INSECURE FIXTURE — for GuardRail demos and unit tests only.
+
+All credentials/tokens below are synthetic placeholders, not real secrets.
+Do not copy these patterns into production code.
+"""
 
 import os
 import subprocess
@@ -6,9 +11,9 @@ import pickle
 
 # Simulated leaks (fake values)
 AWS_ACCESS_KEY_ID = "AKIAEXAMPLEKEY00000"
-aws_secret_access_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-api_key = "sk-proj-thisIsAFakeOpenAIStyleToken123456"
-password = "CorrectHorseBatteryStaple!"
+aws_secret_access_key = "EXAMPLESECRETKEY000000000000000000000000"
+api_key = "sk-proj-EXAMPLE_NOT_A_REAL_TOKEN_000000"
+password = "EXAMPLE_NOT_A_REAL_PASSWORD_123!"
 
 
 def search_users(db, name: str):

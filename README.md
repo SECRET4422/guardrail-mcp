@@ -3,44 +3,29 @@
 [![Release](https://img.shields.io/github/v/release/SECRET4422/guardrail-mcp?color=5b9dff)](https://github.com/SECRET4422/guardrail-mcp/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3ddc97.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-65%20passing-3ddc97)](docs/test-results.md)
-[![MCPize](https://img.shields.io/badge/MCPize-listing-5b9dff)](https://mcpize.com/mcp/guardrail)
 [![Website](https://img.shields.io/badge/website-live-3ddc97)](https://secret4422.github.io/guardrail-mcp/)
-[![Stars](https://img.shields.io/github/stars/SECRET4422/guardrail-mcp?style=social)](https://github.com/SECRET4422/guardrail-mcp)
+[![MCPize](https://img.shields.io/badge/MCPize-listing-5b9dff)](https://mcpize.com/mcp/guardrail)
 
-**Hybrid multi-language security MCP for AI coding agents** — secrets, multi-hop taint, tree-sitter, repo/PR scanning, OSV CVEs, SARIF/SBOM, Docker/K8s checks, enterprise policy packs.
+**Hybrid multi-language security analysis over MCP** for AI-assisted development workflows.
 
-> ⭐ **If GuardRail helps you, please [star this repo](https://github.com/SECRET4422/guardrail-mcp)** and leave a review on [MCPize](https://mcpize.com/mcp/guardrail). Stars unlock marketplace trust.
+GuardRail exposes tools that scan source and infrastructure text for high-signal issues (secrets, dangerous APIs, injection patterns, IaC misconfigurations), with optional tree-sitter structural checks, dependency inventory/OSV, SARIF/SBOM export, and an enterprise policy gateway.
 
-<p align="center">
-  <img src="assets/web/github-banner.jpg" alt="GuardRail banner" width="100%" />
-</p>
+| Resource | URL |
+|----------|-----|
+| Website | https://secret4422.github.io/guardrail-mcp/ |
+| MCPize listing | https://mcpize.com/mcp/guardrail |
+| Accuracy policy | [docs/ACCURACY.md](docs/ACCURACY.md) |
+| Security / threat model | [docs/SECURITY_MODEL.md](docs/SECURITY_MODEL.md) |
+| Examples | [docs/EXAMPLES.md](docs/EXAMPLES.md) |
+| Performance | [docs/PERFORMANCE.md](docs/PERFORMANCE.md) |
+| Test results | [docs/test-results.md](docs/test-results.md) |
+| Enterprise | [docs/ENTERPRISE.md](docs/ENTERPRISE.md) |
 
-## Links
+## Scope (read this)
 
-| | |
-|--|--|
-| **Website + live demo** | https://secret4422.github.io/guardrail-mcp/ |
-| **MCPize listing** | https://mcpize.com/mcp/guardrail |
-| **Release** | https://github.com/SECRET4422/guardrail-mcp/releases/tag/v2.1.0 |
-| **Enterprise guide** | [docs/ENTERPRISE.md](docs/ENTERPRISE.md) |
-| **Security / threat model** | [docs/SECURITY_MODEL.md](docs/SECURITY_MODEL.md) |
-| **Examples** | [docs/EXAMPLES.md](docs/EXAMPLES.md) |
-| **Performance** | [docs/PERFORMANCE.md](docs/PERFORMANCE.md) |
-| **Test results** | [docs/test-results.md](docs/test-results.md) |
-| **Demo video script** | [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) |
-| **MCPize verified checklist** | [docs/MCPIZE_VERIFIED.md](docs/MCPIZE_VERIFIED.md) |
-| **Distribution** | [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md) |
-
-## Why GuardRail?
-
-AI agents generate code **fast**. They also generate:
-
-- hardcoded secrets  
-- SQL/command injection patterns  
-- `eval` / `shell=True` / pickle foot-guns  
-- risky Docker/K8s/Terraform snippets  
-
-GuardRail is an **MCP tool server** agents call *before* applying patches — returning **redacted** findings, remediations, SARIF/SBOM, and policy **ALLOW/DENY**.
+- **Does:** static analysis of text you provide; redacts many secret-shaped substrings in excerpts.
+- **Does not:** execute scanned code; replace commercial SAST/DAST; guarantee zero false positives/negatives; provide SOC2 certification by itself.
+- **Website playground:** browser-only demonstration (`docs/ACCURACY.md`). Production use = Python MCP/CLI.
 
 ## Quick start
 
@@ -50,22 +35,11 @@ cd guardrail-mcp
 pip install -r requirements.txt
 export PYTHONPATH=$PWD
 
-# tests
 python -m unittest discover -s tests -v
-
-# MCP (Cursor / Claude Desktop)
 python -m guardrail --mode stdio
-
-# one-shot hybrid scan
-python - <<'PY'
-from guardrail.hybrid_scan import hybrid_scan
-from pathlib import Path
-import json
-print(json.dumps(hybrid_scan(Path('examples/vulnerable_sample.py').read_text(), filename='vulnerable_sample.py'), indent=2)[:1500])
-PY
 ```
 
-### Cursor / Claude `mcp.json`
+### MCP client configuration
 
 ```json
 {
@@ -80,58 +54,62 @@ PY
 }
 ```
 
-## Feature map
+### CLI scan (ground truth)
 
-| Capability | Status |
-|------------|--------|
-| Multi-language hybrid scan | Shipped |
-| Python AST + multi-hop taint | Shipped |
-| Tree-sitter structural sinks | Shipped |
-| Repo / git-diff parallel scan + cache | Shipped |
-| OSV dependency CVEs | Shipped |
-| SARIF 2.1 + CycloneDX/SPDX SBOM | Shipped |
-| Docker/K8s/IaC heuristics | Shipped |
-| Custom rules + plugins | Shipped |
-| Enterprise RBAC / policy / audit | Shipped |
-| Marketing site + playground demo | Shipped |
-| Automated tests (65) | Shipped |
+```bash
+python - <<'PY'
+from pathlib import Path
+from guardrail.hybrid_scan import hybrid_scan
+r = hybrid_scan(
+    Path("examples/vulnerable_sample.py").read_text(encoding="utf-8"),
+    filename="examples/vulnerable_sample.py",
+)
+print(r["status"], r["security_verdict"], r["issue_count"], r.get("engines"))
+PY
+```
 
-## Performance (snippet class)
+`examples/` contains **intentional insecure fixtures** for tests and demos only (labeled in-file). Values are synthetic.
 
-| Workload | Mean latency |
-|----------|--------------|
-| Dirty Python sample | ~9 ms |
-| Clean Python | ~0.7 ms |
-| Small JS | ~0.5 ms |
+## Capabilities
 
-Details: [docs/PERFORMANCE.md](docs/PERFORMANCE.md) · raw JSON in `benchmarks/`.
+| Area | Implementation |
+|------|----------------|
+| Secrets / high-signal patterns | `rules.py`, language grids |
+| Python AST + multi-hop taint | `ast_engine.py`, `taint.py` |
+| Tree-sitter (optional grammars) | `treesitter_engine.py` |
+| Repo / git-diff scan | `repo_scan.py`, `git_scan.py` |
+| Dependencies / OSV | `deps.py` (network optional) |
+| SARIF / SBOM | `sarif_export.py`, `sbom.py` |
+| Enterprise auth, RBAC, policy | `guardrail/enterprise/` |
+| Custom rules / plugins | `rule_engine.py`, `plugins.py` |
 
-## Security model
+## Tests
 
-Static analysis only — **does not execute** scanned code. Secrets are **redacted** in findings. See the full threat model: [docs/SECURITY_MODEL.md](docs/SECURITY_MODEL.md).
+```bash
+PYTHONPATH=$PWD python -m unittest discover -s tests -v
+```
 
-## Pricing (MCPize)
+Published summary: [docs/test-results.md](docs/test-results.md) (reproduce with the command above).
 
-| Plan | Price |
-|------|-------|
-| Free (self-host) | $0 |
-| Pro | $29/mo |
-| Team | $99/mo |
-| Enterprise | $299/mo |
+## Performance
 
-Listing: https://mcpize.com/mcp/guardrail  
+Indicative micro-benchmarks are in [docs/PERFORMANCE.md](docs/PERFORMANCE.md) and `benchmarks/`. Re-run on your machine before relying on numbers.
 
-## Brand assets
+## Enterprise mode
 
-Logos, favicons, OG image, MCPize banner: [`assets/`](assets/) and optimized [`assets/web/`](assets/web/).
+Optional multi-tenant gateway (API keys/JWT, RBAC, path sandbox, audit, rate limits). See [docs/ENTERPRISE.md](docs/ENTERPRISE.md). Do not deploy HTTP enterprise mode without authentication.
 
-## Contributing & stars
+## Hosted listing
 
-- Read [CONTRIBUTING.md](CONTRIBUTING.md)  
-- Please **star** the repo if you use GuardRail  
-- Leave an MCPize review after trying the hosted listing  
-- Record a short demo with [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md)
+Optional commercial listing: [mcpize.com/mcp/guardrail](https://mcpize.com/mcp/guardrail).  
+Self-hosting the MIT core remains free. Pricing on MCPize is set in that marketplace dashboard.
+
+## Security
+
+- Threat model: [docs/SECURITY_MODEL.md](docs/SECURITY_MODEL.md)  
+- Vulnerability reporting: [SECURITY.md](SECURITY.md)  
+- Claims policy: [docs/ACCURACY.md](docs/ACCURACY.md)
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — [LICENSE](LICENSE).

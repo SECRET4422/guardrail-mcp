@@ -224,19 +224,19 @@
           applyResult(result);
           showToast(
             result.security_verdict === "REJECTED"
-              ? "Blocked: " + result.issue_count + " issue(s)"
-              : "Approved: clean enough"
+              ? "Verdict REJECTED · " + result.issue_count + " finding(s)"
+              : "Verdict APPROVED · " + result.issue_count + " finding(s)"
           );
         } catch (err) {
           showToast("Demo error: " + (err && err.message ? err.message : err));
           console.error(err);
         }
         runBtn.disabled = false;
-        runBtn.textContent = "▶ Run scan";
+        runBtn.textContent = "Run scan";
       }, 180);
     });
   } else if (runBtn) {
-    runBtn.addEventListener("click", () => showToast("Demo engine failed to load"));
+    runBtn.addEventListener("click", () => showToast("Demo engine failed to load — check js/demo-engine.js"));
   }
 
 

@@ -224,18 +224,18 @@
       policy_decision: score >= 40 ? "DENY" : "ALLOW",
       security_score: { score: secScore, grade, severity_counts: counts },
       notes: [
-        "Browser demo engine — mirrors GuardRail rule IDs for UX.",
-        "For production truth, use the Python MCP/CLI hybrid_scan.",
+        "Browser demonstration only — not the Python hybrid_scan runtime.",
+        "Rule IDs are representative. Use the MCP server or CLI for production decisions.",
       ],
     };
   }
 
   const SAMPLES = {
-    python_bad: `import os, subprocess, pickle
+    python_bad: `# INTENTIONAL INSECURE FIXTURE — synthetic values only\nimport os, subprocess, pickle
 
-AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
-password = "SuperSecretPassw0rd!"
-api_key = "sk-proj-thisIsAFakeOpenAIStyleToken123456"
+AWS_ACCESS_KEY_ID = "AKIAEXAMPLEKEY00000"
+password = "EXAMPLE_NOT_A_REAL_PASSWORD_123!"
+api_key = "sk-proj-EXAMPLE_NOT_A_REAL_TOKEN_000000"
 
 def search_users(db, name: str):
     # SQL injection pattern

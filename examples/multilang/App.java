@@ -1,3 +1,4 @@
+// INTENTIONAL INSECURE FIXTURE — demo/test only.
 import java.io.ObjectInputStream;
 import java.sql.Statement;
 
