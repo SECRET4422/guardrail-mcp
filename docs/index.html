@@ -4,15 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GuardRail — Hybrid Security MCP for AI Agents</title>
-  <meta name="description" content="Enterprise multi-language security MCP: secrets, taint analysis, tree-sitter, SARIF/SBOM, policy packs. Built for Cursor, Claude, VS Code, and CI." />
+  <meta name="description" content="Enterprise multi-language security MCP for AI coding agents. Secrets, multi-hop taint, tree-sitter, SARIF/SBOM, policy packs. For Cursor, Claude, VS Code, and CI." />
+  <meta name="theme-color" content="#060912" />
   <meta property="og:title" content="GuardRail Security MCP" />
   <meta property="og:description" content="Scan AI-generated code before you merge. Hybrid engines + enterprise policy gates." />
-  <meta property="og:image" content="assets/web/logo-wordmark.png" />
+  <meta property="og:image" content="assets/web/product-dashboard.jpg" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="assets/web/logo-icon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/web/logo-icon.png" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div id="toast" class="toast" role="status"></div>
+  <div class="progress" id="progress"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <header class="nav">
     <div class="container nav-inner">
@@ -23,9 +28,10 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="#features">Features</a></li>
         <li><a href="#engines">Engines</a></li>
+        <li><a href="#compare">Compare</a></li>
         <li><a href="#demo">Demo</a></li>
         <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#install">Install</a></li>
+        <li><a href="#faq">FAQ</a></li>
       </ul>
       <div class="nav-cta" id="navCta">
         <a class="btn btn-ghost" href="https://github.com/SECRET4422/guardrail-mcp" target="_blank" rel="noopener">GitHub</a>
@@ -35,212 +41,276 @@
   </header>
 
   <main id="top">
-    <!-- HERO -->
     <section class="hero">
       <div class="hero-bg" aria-hidden="true"></div>
       <div class="container hero-grid">
-        <div>
-          <div class="eyebrow"><span class="dot"></span> Security MCP for AI coding agents</div>
-          <h1>Ship agent-written code with a <span class="grad">security guardrail</span></h1>
+        <div class="reveal">
+          <div class="eyebrow"><span class="dot"></span> Security MCP · v2.1 · MIT open core</div>
+          <h1>Stop shipping unsafe AI code.<br /><span class="grad">GuardRail checks it first.</span></h1>
           <p class="lead">
-            GuardRail is a hybrid multi-language security MCP. It catches secrets, injection, dangerous APIs,
-            IaC misconfigs, and dependency CVEs — then returns redacted findings, SARIF/SBOM, and policy ALLOW/DENY
-            for Cursor, Claude, VS Code, and CI.
+            Hybrid multi-language security for Cursor, Claude, and CI. Secrets, multi-hop taint,
+            tree-sitter sinks, repo/PR scans, SARIF/SBOM, and enterprise policy ALLOW/DENY — all as MCP tools agents can call.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary btn-lg" href="https://github.com/SECRET4422/guardrail-mcp" target="_blank" rel="noopener">View on GitHub</a>
-            <a class="btn btn-ghost btn-lg" href="#demo">See live demo</a>
-            <a class="btn btn-teal btn-lg" href="#pricing">Pricing</a>
+            <a class="btn btn-primary btn-lg" href="https://github.com/SECRET4422/guardrail-mcp" target="_blank" rel="noopener">★ Star on GitHub</a>
+            <a class="btn btn-ghost btn-lg" href="#demo">Run interactive demo</a>
+            <a class="btn btn-teal btn-lg" href="#pricing">See pricing</a>
           </div>
           <div class="stats">
-            <div class="stat"><b>19+</b><span>MCP tools</span></div>
-            <div class="stat"><b>65</b><span>automated tests</span></div>
-            <div class="stat"><b>8+</b><span>languages</span></div>
-            <div class="stat"><b>v2.1</b><span>enterprise ready</span></div>
-          </div>
-          <div class="strip">
-            <span class="pill">Cursor</span>
-            <span class="pill">Claude Desktop</span>
-            <span class="pill">VS Code</span>
-            <span class="pill">GitHub Actions</span>
-            <span class="pill">MCPize</span>
-            <span class="pill">SARIF · SBOM</span>
+            <div class="stat"><b data-count="19" data-suffix="+">0</b><span>MCP tools</span></div>
+            <div class="stat"><b data-count="65">0</b><span>automated tests</span></div>
+            <div class="stat"><b data-count="8" data-suffix="+">0</b><span>languages</span></div>
+            <div class="stat"><b>4</b><span>hybrid engines</span></div>
           </div>
         </div>
 
-        <div class="hero-panel" aria-label="Scan preview">
-          <div class="panel-top"><i></i><i></i><i></i></div>
-          <div class="panel-body">
-            <div class="line"><span class="c"># GuardRail hybrid scan</span></div>
-            <div class="line"><span class="k">def</span> <span class="f">handler</span>(request):</div>
-            <div class="line">    password = <span class="s">"SuperSecret…"</span>  <span class="c"># GR-SEC-002</span></div>
-            <div class="line">    q = request.args.get(<span class="s">"user"</span>)</div>
-            <div class="line">    db.execute(<span class="s">f"SELECT … {q}"</span>)  <span class="c"># GR-TAINT-003</span></div>
-            <div class="line">    <span class="f">eval</span>(payload)  <span class="c"># GR-AST-003</span></div>
-            <div class="badge-row">
-              <span class="badge crit">CRITICAL · taint SQL</span>
-              <span class="badge crit">CRITICAL · eval</span>
-              <span class="badge high">HIGH · secret</span>
-              <span class="badge blue">engines: regex+ast+taint+ts</span>
-              <span class="badge ok">excerpts redacted</span>
-            </div>
+        <div class="hero-visual reveal">
+          <div class="glow" aria-hidden="true"></div>
+          <div class="product-shot">
+            <img src="assets/web/product-dashboard.jpg" alt="GuardRail security dashboard mockup with findings and risk score" width="960" height="640" />
           </div>
+          <div class="float-card a">CRITICAL · SQL taint<span>request → execute</span></div>
+          <div class="float-card b">Secrets redacted<span>safe for agent chat</span></div>
         </div>
       </div>
     </section>
 
-    <!-- FEATURES -->
+    <div class="trust">
+      <div class="container trust-inner">
+        <span class="pill">Cursor</span>
+        <span class="pill">Claude Desktop</span>
+        <span class="pill">VS Code</span>
+        <span class="pill">GitHub Actions</span>
+        <span class="pill">MCPize</span>
+        <span class="pill">Smithery-ready</span>
+        <span class="pill">SARIF · CycloneDX · SPDX</span>
+        <span class="pill">Enterprise RBAC</span>
+      </div>
+    </div>
+
     <section id="features" class="section-alt">
       <div class="container">
-        <div class="section-head">
-          <h2>Built for the agent era</h2>
-          <p>Stop merging untrusted AI patches. GuardRail plugs into your MCP client and CI with the same hybrid engines.</p>
+        <div class="section-head reveal">
+          <h2>Built for the agent development loop</h2>
+          <p>GuardRail sits between AI-generated patches and your main branch — same engines in the IDE and CI.</p>
         </div>
         <div class="features">
-          <article class="feature">
-            <img src="assets/web/feature-agent.jpg" alt="AI agent code security scan illustration" width="640" height="427" loading="lazy" />
+          <article class="feature reveal">
+            <img src="assets/web/feature-agent.jpg" alt="AI agent scanning code" width="640" height="427" loading="lazy" />
             <div class="feature-body">
-              <h3>Agent-native code review</h3>
-              <p>Scan snippets and patches as the model writes them. Redacted findings + remediations the agent can act on.</p>
+              <h3>Agent-native review</h3>
+              <p>MCP tools return redacted findings + remediations models can apply. No secret leakage into chat history.</p>
             </div>
           </article>
-          <article class="feature">
-            <img src="assets/web/feature-lang.jpg" alt="Multi-language scanning illustration" width="640" height="427" loading="lazy" />
+          <article class="feature reveal">
+            <img src="assets/web/feature-lang.jpg" alt="Multi-language security" width="640" height="427" loading="lazy" />
             <div class="feature-body">
-              <h3>Multi-language coverage</h3>
-              <p>Python deep AST/taint, plus JavaScript/TypeScript, Go, Java, Rust, C/C++, shell, Docker, Terraform, and K8s.</p>
+              <h3>Multi-language hybrid scan</h3>
+              <p>Python AST + multi-hop taint, tree-sitter for JS/Go/Java/Rust/C/C++, plus high-signal language grids.</p>
             </div>
           </article>
-          <article class="feature">
-            <img src="assets/web/feature-cicd.jpg" alt="CI CD security gate illustration" width="640" height="427" loading="lazy" />
+          <article class="feature reveal">
+            <img src="assets/web/feature-cicd.jpg" alt="CI CD security gate" width="640" height="427" loading="lazy" />
             <div class="feature-body">
               <h3>PR &amp; CI gates</h3>
-              <p>Git diff scanning, SARIF for GitHub code scanning, SBOM export, and policy ALLOW/DENY for release control.</p>
+              <p>Git diff mode, SARIF upload, SBOM export, policy packs that emit ALLOW/DENY for release control.</p>
             </div>
           </article>
-          <article class="feature">
-            <img src="assets/web/feature-enterprise.jpg" alt="Enterprise security dashboard illustration" width="640" height="427" loading="lazy" />
+          <article class="feature reveal">
+            <img src="assets/web/feature-enterprise.jpg" alt="Enterprise control plane" width="640" height="427" loading="lazy" />
             <div class="feature-body">
               <h3>Enterprise control plane</h3>
-              <p>API keys/JWT, RBAC, path sandbox, rate limits, audit logs, policy packs (strict/SOC2/PCI), Prometheus metrics.</p>
+              <p>API keys/JWT, RBAC, path sandbox, quotas, audit logs, compliance evidence, Prometheus metrics.</p>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- ENGINES -->
     <section id="engines">
       <div class="container">
-        <div class="section-head">
-          <h2>Hybrid engines that catch real issues</h2>
-          <p>Not one brittle regex. GuardRail stacks complementary analyzers and dedupes results for cleaner agent output.</p>
+        <div class="section-head reveal">
+          <h2>Four engines. One clean report.</h2>
+          <p>Complementary analyzers reduce blind spots. Results are deduped so agents get signal, not noise.</p>
         </div>
         <div class="engine-grid">
-          <div class="engine"><div class="ico">RX</div><h3>Secret &amp; pattern grid</h3><p>AWS keys, tokens, webhooks, PEM blocks, TLS verify-off, and high-signal sink patterns.</p></div>
-          <div class="engine"><div class="ico">AST</div><h3>Python AST</h3><p>eval/exec aliases, shell=True, pickle, yaml.load, SQL interpolation with line-level evidence.</p></div>
-          <div class="engine"><div class="ico">TN</div><h3>Multi-hop taint</h3><p>Tracks request/input → variables → sinks across assignments with sanitizer awareness.</p></div>
-          <div class="engine"><div class="ico">TS</div><h3>Tree-sitter</h3><p>Structural sinks across Python, JS, Go, Java, C/C++, Rust — more robust than pure text search.</p></div>
-          <div class="engine"><div class="ico">PL</div><h3>Plugins &amp; rules</h3><p>YAML/JSON custom rules and Python plugins so orgs encode their own security policy.</p></div>
-          <div class="engine"><div class="ico">CI</div><h3>Repo · Diff · Cache</h3><p>Parallel repository walks, git PR mode, incremental content-hash cache for monorepos.</p></div>
+          <div class="engine reveal"><div class="ico">RX</div><h3>Secret &amp; pattern grid</h3><p>Keys, tokens, PEM, TLS verify-off, shell injection patterns, provider prefixes.</p></div>
+          <div class="engine reveal"><div class="ico">AST</div><h3>Python semantic AST</h3><p>eval aliases, shell=True, pickle, insecure YAML, SQL interpolation with line evidence.</p></div>
+          <div class="engine reveal"><div class="ico">TN</div><h3>Multi-hop taint</h3><p>Tracks untrusted data across assignments into SQL, command, eval, path, and SSRF sinks.</p></div>
+          <div class="engine reveal"><div class="ico">TS</div><h3>Tree-sitter CST</h3><p>Structural sinks in Python, JS, Go, Java, C/C++, Rust — stronger than pure text search.</p></div>
+          <div class="engine reveal"><div class="ico">PL</div><h3>Plugins &amp; rules</h3><p>Org YAML/JSON rules and Python plugins without forking the core server.</p></div>
+          <div class="engine reveal"><div class="ico">CI</div><h3>Repo · Diff · Cache</h3><p>Parallel walks, PR-only scans, incremental content-hash cache for monorepos.</p></div>
+        </div>
+        <div class="tools reveal" aria-label="MCP tools">
+          <span class="tool-chip">audit_code_safety</span>
+          <span class="tool-chip">scan_repository</span>
+          <span class="tool-chip">scan_git_diff</span>
+          <span class="tool-chip">scan_dependencies</span>
+          <span class="tool-chip">export_sarif</span>
+          <span class="tool-chip">generate_sbom</span>
+          <span class="tool-chip">suggest_fixes</span>
+          <span class="tool-chip">evaluate_policy</span>
+          <span class="tool-chip">full_pipeline</span>
+          <span class="tool-chip">enterprise_health</span>
         </div>
       </div>
     </section>
 
-    <!-- HOW -->
-    <section class="section-alt">
+    <section id="compare" class="section-alt">
       <div class="container">
-        <div class="section-head">
-          <h2>How teams use GuardRail</h2>
-          <p>From IDE agents to production CI — one MCP, consistent verdicts.</p>
+        <div class="section-head reveal">
+          <h2>Why teams pick GuardRail</h2>
+          <p>Directories list tools. GuardRail is a full security workflow for agent-written code.</p>
+        </div>
+        <div class="table-wrap reveal">
+          <table class="compare">
+            <thead>
+              <tr>
+                <th>Capability</th>
+                <th>Generic MCP toy</th>
+                <th>Cloud SAST only</th>
+                <th>GuardRail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Works inside Cursor / Claude MCP</td>
+                <td class="yes">✓</td>
+                <td class="no">Often no</td>
+                <td class="yes">✓</td>
+              </tr>
+              <tr>
+                <td>Multi-hop taint + tree-sitter</td>
+                <td class="no">—</td>
+                <td class="yes">Sometimes</td>
+                <td class="yes">✓</td>
+              </tr>
+              <tr>
+                <td>Secret redaction for agent chat</td>
+                <td class="no">Rare</td>
+                <td class="no">Varies</td>
+                <td class="yes">✓</td>
+              </tr>
+              <tr>
+                <td>SARIF + SBOM + PR diff mode</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+              <tr>
+                <td>Self-host free / MIT core</td>
+                <td class="yes">Sometimes</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+              </tr>
+              <tr>
+                <td>Enterprise RBAC + policy packs</td>
+                <td class="no">—</td>
+                <td class="yes">$$$$</td>
+                <td class="yes">✓ included</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>How it fits your workflow</h2>
+          <p>From IDE agents to production CI — one server, consistent verdicts.</p>
         </div>
         <div class="steps">
-          <div class="step">
+          <div class="step reveal">
             <h3>Install the MCP</h3>
-            <p>Point Cursor / Claude / VS Code at <code>python -m guardrail --mode stdio</code> or deploy via MCPize.</p>
+            <p>Point Cursor / Claude / VS Code at <code>python -m guardrail --mode stdio</code>, or deploy on MCPize.</p>
           </div>
-          <div class="step">
+          <div class="step reveal">
             <h3>Scan before apply</h3>
-            <p>Agents call <code>audit_code_safety</code> or <code>scan_git_diff</code> on generated patches and PRs.</p>
+            <p>Agents call <code>audit_code_safety</code> or <code>scan_git_diff</code> on generated patches and pull requests.</p>
           </div>
-          <div class="step">
+          <div class="step reveal">
             <h3>Gate with policy</h3>
-            <p>Enterprise packs return ALLOW/DENY. Export SARIF, score history, and compliance evidence.</p>
+            <p>Strict / SOC2 / PCI packs return ALLOW or DENY. Export SARIF and compliance evidence for audits.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- DEMO -->
-    <section id="demo">
+    <section id="demo" class="section-alt">
       <div class="container">
-        <div class="section-head">
-          <h2>Interactive demo</h2>
-          <p>See how GuardRail responds to a vulnerable snippet. (Client-side simulation of the real hybrid pipeline.)</p>
+        <div class="section-head reveal">
+          <h2>Interactive hybrid scan demo</h2>
+          <p>Simulated client-side preview of what the real pipeline returns on a dirty snippet.</p>
         </div>
-        <div class="demo-wrap">
+        <div class="demo-wrap reveal">
           <div class="demo-card">
-            <div class="install-bar">
-              <span>vulnerable sample · Python</span>
+            <div class="bar">
+              <span>vulnerable_sample.py · hybrid engines</span>
               <button class="btn btn-primary" id="runDemo" type="button">Run live demo</button>
             </div>
-            <pre id="demoOut">Click “Run live demo” to simulate a hybrid scan against:
-password hardcode · SQL f-string · eval(user input)
+            <pre id="demoOut">Click “Run live demo” to simulate:
 
-Real CLI:
-  python -c "from guardrail.hybrid_scan import hybrid_scan; …"</pre>
+  password hardcode
+  SQL f-string from request.args
+  eval(user input)
+
+Real command:
+  from guardrail.hybrid_scan import hybrid_scan
+  hybrid_scan(open("app.py").read(), filename="app.py")</pre>
           </div>
           <div class="score-card">
-            <h3 style="margin:0 0 0.25rem">Security score</h3>
-            <p style="margin:0;color:var(--muted);font-size:0.9rem">Lower score = higher risk after findings</p>
-            <div class="score-ring" aria-hidden="true"><strong id="scoreVal">—</strong></div>
+            <h3 style="margin:0 0 .2rem">Security score</h3>
+            <p style="margin:0;color:var(--muted);font-size:.9rem">100 = clean · findings reduce score</p>
+            <div class="score-ring" id="scoreRing" style="--p: 8%"><strong id="scoreVal">—</strong></div>
             <div class="score-meta">
               <div><span>Verdict</span><span id="verdictVal" class="v-ok">Ready</span></div>
               <div><span>Issues</span><span id="issuesVal">—</span></div>
               <div><span>Engines</span><span id="enginesVal">—</span></div>
-              <div><span>Policy</span><span>strict / soc2 / pci packs</span></div>
+              <div><span>Policy</span><span id="policyVal">—</span></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PRICING -->
-    <section id="pricing" class="section-alt">
+    <section id="pricing">
       <div class="container">
-        <div class="section-head">
-          <h2>Simple pricing for MCPize &amp; teams</h2>
-          <p>Start free. Upgrade when you need repo gates, SARIF, and enterprise policy. Host yourself for free forever.</p>
+        <div class="section-head reveal">
+          <h2>Pricing that matches security value</h2>
+          <p>Self-host free forever. Monetize on MCPize with freemium → Pro → Enterprise.</p>
         </div>
         <div class="pricing">
-          <div class="price">
+          <div class="price reveal">
             <div class="plan">Free</div>
             <div class="amount">$0<span>/mo</span></div>
-            <div class="desc">Local MCP &amp; open source on GitHub</div>
+            <div class="desc">Open source · local MCP</div>
             <ul>
-              <li>STDIO MCP server</li>
-              <li>Hybrid engines (self-host)</li>
-              <li>Community tests &amp; examples</li>
+              <li>Full hybrid engines (self-host)</li>
+              <li>STDIO for Cursor / Claude</li>
+              <li>65 tests + examples</li>
               <li>MIT license</li>
             </ul>
             <a class="btn btn-ghost" href="https://github.com/SECRET4422/guardrail-mcp" target="_blank" rel="noopener">Clone free</a>
           </div>
-          <div class="price featured">
+          <div class="price featured reveal">
+            <div class="ribbon">Popular</div>
             <div class="plan">Pro</div>
             <div class="amount">$29<span>/mo</span></div>
-            <div class="desc">Best for solo builders on MCPize</div>
+            <div class="desc">Solo builders on MCPize</div>
             <ul>
-              <li>Full hybrid + repo/PR scan</li>
-              <li>SARIF &amp; SBOM export</li>
+              <li>Hosted MCP endpoint</li>
+              <li>Repo / PR / SARIF / SBOM</li>
               <li>Fix drafts</li>
-              <li>Priority marketplace listing</li>
+              <li>Marketplace listing</li>
             </ul>
             <a class="btn btn-primary" href="https://mcpize.com/developers" target="_blank" rel="noopener">Start Pro</a>
           </div>
-          <div class="price">
+          <div class="price reveal">
             <div class="plan">Team</div>
             <div class="amount">$99<span>/mo</span></div>
-            <div class="desc">Startups shipping agent workflows</div>
+            <div class="desc">Startups shipping agents</div>
             <ul>
               <li>Everything in Pro</li>
               <li>Higher scan limits</li>
@@ -249,32 +319,54 @@ Real CLI:
             </ul>
             <a class="btn btn-ghost" href="https://mcpize.com/developers" target="_blank" rel="noopener">Choose Team</a>
           </div>
-          <div class="price">
+          <div class="price reveal">
             <div class="plan">Enterprise</div>
             <div class="amount">$299<span>/mo</span></div>
-            <div class="desc">Org-wide agent security control</div>
+            <div class="desc">Org-wide agent security</div>
             <ul>
               <li>RBAC · JWT · audit logs</li>
               <li>Path sandbox &amp; quotas</li>
-              <li>Compliance evidence reports</li>
+              <li>Compliance evidence</li>
               <li>Custom policy support</li>
             </ul>
-            <a class="btn btn-ghost" href="mailto:hello@example.com?subject=GuardRail%20Enterprise">Contact sales</a>
+            <a class="btn btn-ghost" href="https://github.com/SECRET4422/guardrail-mcp#readme" target="_blank" rel="noopener">Talk to us</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- INSTALL -->
+    <section class="section-alt">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>What builders say</h2>
+          <p>Example messaging you can use in outreach — replace with real quotes as you get users.</p>
+        </div>
+        <div class="quotes">
+          <div class="quote reveal">
+            <p>“Finally an MCP that treats AI-generated patches like untrusted input.”</p>
+            <div class="who">— Staff engineer · AI coding tooling</div>
+          </div>
+          <div class="quote reveal">
+            <p>“Taint + tree-sitter in one agent tool beats pasting code into a random scanner.”</p>
+            <div class="who">— AppSec · product security</div>
+          </div>
+          <div class="quote reveal">
+            <p>“SARIF in CI and the same checks in Cursor. One policy story for the team.”</p>
+            <div class="who">— Platform lead · startup</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="install">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <h2>Install in minutes</h2>
-          <p>Open source on GitHub. Works locally over STDIO or hosted via MCPize.</p>
+          <p>Open source on GitHub. STDIO for IDEs. HTTP for dashboards and hosted gateways.</p>
         </div>
-        <div class="demo-wrap">
+        <div class="install-grid reveal">
           <div>
-            <h3 style="margin-top:0">Local / Cursor / Claude</h3>
+            <h3 style="margin-top:0">Cursor / Claude config</h3>
             <div class="install">
               <div class="install-bar">
                 <span>mcp.json</span>
@@ -293,7 +385,7 @@ Real CLI:
             </div>
           </div>
           <div>
-            <h3 style="margin-top:0">Clone &amp; test</h3>
+            <h3 style="margin-top:0">Clone &amp; verify</h3>
             <div class="install">
               <div class="install-bar">
                 <span>terminal</span>
@@ -306,26 +398,57 @@ export PYTHONPATH=$PWD
 python -m unittest discover -s tests -v
 python -m guardrail --mode stdio</pre>
             </div>
-            <p style="color:var(--muted);font-size:0.9rem;margin-top:1rem">
-              Docs: <a href="https://github.com/SECRET4422/guardrail-mcp/blob/main/docs/ENTERPRISE.md" target="_blank" rel="noopener">Enterprise</a> ·
-              <a href="https://github.com/SECRET4422/guardrail-mcp/blob/main/docs/MCPIZE.md" target="_blank" rel="noopener">MCPize</a> ·
-              <a href="https://github.com/SECRET4422/guardrail-mcp/blob/main/docs/DISTRIBUTION.md" target="_blank" rel="noopener">Distribution</a>
-            </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CTA -->
+    <section id="faq" class="section-alt">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>FAQ</h2>
+          <p>Straight answers for buyers and security reviewers.</p>
+        </div>
+        <div class="faq-grid">
+          <div class="faq-visual reveal">
+            <img src="assets/web/faq-visual.jpg" alt="Abstract security illustration" width="640" height="427" loading="lazy" />
+          </div>
+          <div class="faq reveal">
+            <details open>
+              <summary>Is GuardRail a full commercial SAST?</summary>
+              <div class="ans">It’s a hybrid heuristic + semantic MCP guardrail optimized for agents and CI. It is not a substitute for enterprise SAST suites, but it’s far beyond toy regex scanners.</div>
+            </details>
+            <details>
+              <summary>Will secrets leak into the LLM chat?</summary>
+              <div class="ans">Findings use redacted excerpts. Still: never scan production secrets you can’t rotate, and prefer local STDIO over pasting secrets into remote hosts.</div>
+            </details>
+            <details>
+              <summary>Can I use it only in CI?</summary>
+              <div class="ans">Yes. Use <code>scan-repo</code>, <code>scan-diff</code>, SARIF export, and the included GitHub Actions workflows without any IDE.</div>
+            </details>
+            <details>
+              <summary>How do I make money with it?</summary>
+              <div class="ans">Self-host free, or publish on MCPize with Pro/Team/Enterprise tiers. See docs/MCPIZE.md in the repo.</div>
+            </details>
+            <details>
+              <summary>What languages are supported?</summary>
+              <div class="ans">Deep Python (AST + taint). Structural tree-sitter for JS/TS, Go, Java, C/C++, Rust. Pattern grids for shell, Docker, Terraform, K8s, and more.</div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="cta">
       <div class="container">
-        <div class="cta-box">
-          <img src="assets/web/logo-icon.png" alt="" width="64" height="64" style="margin:0 auto 1rem;border-radius:16px" />
+        <div class="cta-box reveal">
+          <img src="assets/web/logo-icon.png" alt="" width="68" height="68" style="margin:0 auto 1rem;border-radius:16px" />
           <h2>Put a guardrail in front of your agents</h2>
-          <p>Open source core. Marketplace monetization on MCPize. Enterprise controls when you need them.</p>
+          <p>Open-source core. Marketplace monetization. Enterprise controls when you need them.</p>
           <div class="cta-actions">
-            <a class="btn btn-primary btn-lg" href="https://github.com/SECRET4422/guardrail-mcp" target="_blank" rel="noopener">Star on GitHub</a>
-            <a class="btn btn-teal btn-lg" href="https://mcpize.com/developers" target="_blank" rel="noopener">Publish &amp; earn on MCPize</a>
+            <a class="btn btn-primary btn-lg" href="https://github.com/SECRET4422/guardrail-mcp" target="_blank" rel="noopener">Open GitHub repo</a>
+            <a class="btn btn-teal btn-lg" href="https://mcpize.com/developers" target="_blank" rel="noopener">Publish on MCPize</a>
+            <a class="btn btn-ghost btn-lg" href="https://secret4422.github.io/guardrail-mcp/" target="_blank" rel="noopener">This website</a>
           </div>
         </div>
       </div>
@@ -355,7 +478,7 @@ python -m guardrail --mode stdio</pre>
           <h4>Developers</h4>
           <ul>
             <li><a href="https://github.com/SECRET4422/guardrail-mcp" target="_blank" rel="noopener">GitHub</a></li>
-            <li><a href="https://github.com/SECRET4422/guardrail-mcp/releases/tag/v2.1.0" target="_blank" rel="noopener">Release v2.1.0</a></li>
+            <li><a href="https://github.com/SECRET4422/guardrail-mcp/releases/tag/v2.1.0" target="_blank" rel="noopener">v2.1.0 release</a></li>
             <li><a href="https://github.com/SECRET4422/guardrail-mcp/blob/main/docs/ENTERPRISE.md" target="_blank" rel="noopener">Enterprise docs</a></li>
             <li><a href="#install">Install</a></li>
           </ul>
@@ -366,13 +489,13 @@ python -m guardrail --mode stdio</pre>
             <li><a href="https://mcpize.com/developers" target="_blank" rel="noopener">MCPize</a></li>
             <li><a href="https://smithery.ai" target="_blank" rel="noopener">Smithery</a></li>
             <li><a href="https://mcp.so" target="_blank" rel="noopener">mcp.so</a></li>
-            <li><a href="https://github.com/SECRET4422/guardrail-mcp/blob/main/docs/DISTRIBUTION.md" target="_blank" rel="noopener">Distribution guide</a></li>
+            <li><a href="https://github.com/SECRET4422/guardrail-mcp/blob/main/docs/DISTRIBUTION.md" target="_blank" rel="noopener">Distribution</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <span>© <span id="year">2026</span> GuardRail · MIT License</span>
-        <span>Repo: SECRET4422/guardrail-mcp</span>
+        <span>https://github.com/SECRET4422/guardrail-mcp</span>
       </div>
     </div>
   </footer>
