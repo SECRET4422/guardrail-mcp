@@ -1,4 +1,5 @@
 # GuardRail MCP v2.0 (Enterprise)
+[![MCPize](https://mcpize.com/badge/@secret4422/guardrail)](https://mcpize.com/mcp/guardrail)
 
 Multi-language **enterprise agent security MCP**: hybrid Python AST taint, multi-language sinks, parallel repo & PR scanning, OSV CVEs, SARIF/SBOM, Docker/K8s checks, **plus multi-tenant RBAC, policy packs, audit logs, path sandbox, quotas, and Prometheus metrics**.
 
@@ -46,6 +47,16 @@ cd guardrail-mcp
 pip install -r requirements.txt
 export PYTHONPATH=$PWD
 ```
+
+## Connect via MCPize
+
+Use this MCP server instantly with no local installation:
+
+```bash
+npx -y mcpize connect @secret4422/guardrail --client claude
+```
+
+Or connect at: **https://mcpize.com/mcp/guardrail**
 
 ## CLI
 
