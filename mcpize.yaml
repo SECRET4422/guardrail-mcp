@@ -1,76 +1,22 @@
-# MCPize marketplace manifest — https://mcpize.com
-# Deploy: npx mcpize login && npx mcpize deploy -y
-# Publish: npx mcpize publish --pricing "..." --list
+# MCPize Configuration
+# Docs: https://mcpize.com/docs/mcpize-yaml
+
 version: 1
-name: guardrail-mcp
-displayName: GuardRail Security
-description: >-
-  Enterprise multi-language security MCP for AI coding agents. Hybrid scan
-  (secrets + Python AST/taint + tree-sitter), repo/PR diff scanning, OSV CVEs,
-  SARIF/SBOM, Docker/K8s checks, policy packs, RBAC, audit logs, and fix drafts.
-  Built for Cursor, Claude Desktop, VS Code, and CI.
+
+name: "GuardRail Security"
+slug: "guardrail"
 
 runtime: python
-entry: guardrail.server:main
 
 build:
-  install: pip install -r requirements.txt && pip install -e .
+  install: "pip install -r requirements.txt && pip install -e ."
 
-startCommand:
+start:
   type: stdio
-  command: python
+  command: "python"
   args:
     - "-m"
     - "guardrail"
     - "serve"
     - "--mode"
     - "stdio"
-
-# Optional env for cloud/hosted installs (all optional for basic scans)
-env:
-  GUARDRAIL_ENTERPRISE:
-    description: Set to 1 to enable multi-tenant enterprise gateway
-    required: false
-    default: "0"
-  GUARDRAIL_ENTERPRISE_CONFIG:
-    description: Path to enterprise.json (tenant keys, policy packs)
-    required: false
-  GUARDRAIL_LLM_API_KEY:
-    description: Optional API key for LLM-assisted autofix drafts
-    required: false
-  GUARDRAIL_JWT_SECRET:
-    description: JWT signing secret when enterprise auth is enabled
-    required: false
-
-# Marketplace listing (used / refined by `mcpize publish`)
-marketplace:
-  category: security
-  tags:
-    - security
-    - sast
-    - secrets
-    - taint-analysis
-    - tree-sitter
-    - sarif
-    - sbom
-    - owasp
-    - enterprise
-    - code-review
-  oneLiner: >-
-    Hybrid security scans for agent-written code — secrets, injection, IaC, CVEs,
-    SARIF/SBOM, with enterprise policy gates.
-  useCases:
-    - Scan AI-generated patches in Cursor/Claude before you apply them
-    - PR/CI security gates with SARIF upload and policy ALLOW/DENY
-    - Repo-wide multi-language audits plus Docker/K8s misconfig checks
-  homepage: https://github.com/SECRET4422/guardrail-mcp
-  repository: https://github.com/SECRET4422/guardrail-mcp
-  license: MIT
-  # Suggested pricing (enterprise security tools): freemium + pro subscription
-  # Set live pricing in dashboard or: mcpize publish --pricing "..."
-  pricingHint:
-    model: freemium
-    free: "Single-file audit_code_safety (regex+AST basic)"
-    pro_monthly_usd: 29
-    team_monthly_usd: 99
-    enterprise_monthly_usd: 299
