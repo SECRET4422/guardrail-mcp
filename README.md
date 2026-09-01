@@ -1,12 +1,16 @@
-# GuardRail MCP
+<h1 align="center">GuardRail MCP</h1>
+<p align="center"><b>Hybrid multi-language security analysis over MCP for AI-assisted workflows.</b></p>
 
-[![Release](https://img.shields.io/github/v/release/SECRET4422/guardrail-mcp?color=5b9dff)](https://github.com/SECRET4422/guardrail-mcp/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-3ddc97.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-65%20passing-3ddc97)](docs/test-results.md)
-[![Website](https://img.shields.io/badge/website-live-3ddc97)](https://secret4422.github.io/guardrail-mcp/)
-[![MCPize](https://img.shields.io/badge/MCPize-listing-5b9dff)](https://mcpize.com/mcp/guardrail)
+<p align="center">
+  <a href="https://github.com/SECRET4422/guardrail-mcp/releases"><img src="https://img.shields.io/github/v/release/SECRET4422/guardrail-mcp?color=5b9dff" alt="Release" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-3ddc97.svg" alt="MIT" /></a>
+  <a href="https://github.com/SECRET4422/guardrail-mcp/stargazers"><img src="https://img.shields.io/github/stars/SECRET4422/guardrail-mcp?style=flat&logo=github" alt="Stars" /></a>
+  <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-Compatible-black?logo=anthropic" alt="MCP" /></a>
+  <a href="docs/test-results.md"><img src="https://img.shields.io/badge/tests-65%20passing-3ddc97" alt="Tests" /></a>
+  <a href="https://secret4422.github.io/guardrail-mcp/"><img src="https://img.shields.io/badge/website-live-3ddc97" alt="Website" /></a>
+</p>
 
-**Hybrid multi-language security analysis over MCP** for AI-assisted development workflows.
+---
 
 GuardRail exposes tools that scan source and infrastructure text for high-signal issues (secrets, dangerous APIs, injection patterns, IaC misconfigurations), with optional tree-sitter structural checks, dependency inventory/OSV, SARIF/SBOM export, and an enterprise policy gateway.
 
