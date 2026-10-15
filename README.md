@@ -6,7 +6,9 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-3ddc97.svg" alt="MIT" /></a>
   <a href="https://github.com/SECRET4422/guardrail-mcp/stargazers"><img src="https://img.shields.io/github/stars/SECRET4422/guardrail-mcp?style=flat&logo=github" alt="Stars" /></a>
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-Compatible-black?logo=anthropic" alt="MCP" /></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/Python-3.10%2B-blue.svg" alt="Python 3.10+" /></a>
   <a href="docs/test-results.md"><img src="https://img.shields.io/badge/tests-65%20passing-3ddc97" alt="Tests" /></a>
+  <a href="https://alphatech.studio"><img src="https://img.shields.io/badge/AlphaTech%20Studio-Verified-0a66c2?style=flat" alt="AlphaTech Studio" /></a>
   <a href="https://secret4422.github.io/guardrail-mcp/"><img src="https://img.shields.io/badge/website-live-3ddc97" alt="Website" /></a>
 </p>
 
@@ -17,6 +19,7 @@ GuardRail exposes tools that scan source and infrastructure text for high-signal
 | Resource | URL |
 |----------|-----|
 | Website | https://secret4422.github.io/guardrail-mcp/ |
+| AlphaTech Studio | https://alphatech.studio |
 | MCPize listing | https://mcpize.com/mcp/guardrail |
 | Accuracy policy | [docs/ACCURACY.md](docs/ACCURACY.md) |
 | Security / threat model | [docs/SECURITY_MODEL.md](docs/SECURITY_MODEL.md) |
@@ -33,26 +36,50 @@ GuardRail exposes tools that scan source and infrastructure text for high-signal
 
 ## Quick start
 
+### Option 1: Fast run with `uvx` (zero installation)
+
+```bash
+uvx --from git+https://github.com/SECRET4422/guardrail-mcp.git guardrail-mcp
+```
+
+### Option 2: Clone and install editable (Cross-platform: Windows, macOS, Linux)
+
 ```bash
 git clone https://github.com/SECRET4422/guardrail-mcp.git
 cd guardrail-mcp
-pip install -r requirements.txt
-export PYTHONPATH=$PWD
+pip install -e .
 
+# Run test suite
 python -m unittest discover -s tests -v
-python -m guardrail --mode stdio
+
+# Start MCP stdio server
+guardrail-mcp
 ```
 
 ### MCP client configuration
+
+Add GuardRail to your Claude Desktop or Cursor configuration (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "guardrail": {
+      "command": "guardrail-mcp",
+      "args": ["serve", "--mode", "stdio"]
+    }
+  }
+}
+```
+
+Or when running via direct Python executable in a local virtual environment:
 
 ```json
 {
   "mcpServers": {
     "guardrail": {
       "command": "python",
-      "args": ["-m", "guardrail", "--mode", "stdio"],
-      "cwd": "/absolute/path/to/guardrail-mcp",
-      "env": { "PYTHONPATH": "/absolute/path/to/guardrail-mcp" }
+      "args": ["-m", "guardrail.server", "serve", "--mode", "stdio"],
+      "cwd": "/absolute/path/to/guardrail-mcp"
     }
   }
 }
@@ -90,7 +117,13 @@ PY
 ## Tests
 
 ```bash
-PYTHONPATH=$PWD python -m unittest discover -s tests -v
+python -m unittest discover -s tests -v
+```
+
+Or with `pytest`:
+
+```bash
+pytest
 ```
 
 Published summary: [docs/test-results.md](docs/test-results.md) (reproduce with the command above).
